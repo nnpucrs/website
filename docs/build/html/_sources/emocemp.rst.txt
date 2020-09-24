@@ -1,5 +1,5 @@
-EMOCEMP Package
-===============
+emocempr Package
+================
 
 Instalação
 ^^^^^^^^^^

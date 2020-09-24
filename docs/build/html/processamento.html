@@ -1,22 +1,23 @@
 
-<!DOCTYPE html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Neuroimagem &#8212; Workflows  documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/language_data.js"></script>
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="EMOCEMP Package" href="emocemp.html" />
-    <link rel="prev" title="Neuroimmunology and Neuroinflammation Group" href="index.html" />
+    <link rel="next" title="emocempr Package" href="emocemp.html" />
+    <link rel="prev" title="Neuroimmunology and Neuroinflammation Group" href="contents.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
@@ -37,13 +38,77 @@
 <h1>Neuroimagem<a class="headerlink" href="#neuroimagem" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="softwares">
 <h2>Softwares<a class="headerlink" href="#softwares" title="Permalink to this headline">¶</a></h2>
+<div class="line-block">
+<div class="line">Os worflows mais importantes descritos nos documentos a seguir são baseados em funções de softwares externos que incluem principalmente:</div>
+</div>
+<ul class="simple">
+<li>FMRIB Software Library (FSL) - <a class="reference external" href="https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/FslInstallation">https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/FslInstallation</a></li>
+<li>MRtrix3 - <a class="reference external" href="https://www.mrtrix.org/download/">https://www.mrtrix.org/download/</a></li>
+<li>Freesurfer - <a class="reference external" href="https://surfer.nmr.mgh.harvard.edu/fswiki/DownloadAndInstall">https://surfer.nmr.mgh.harvard.edu/fswiki/DownloadAndInstall</a></li>
+<li>R (fslr, oasis and myelinmap packages)</li>
+</ul>
+<p>Todos sendo disponibilizados atualmente apenas para Linux e Mac</p>
+<p>* Para configuração dos pacotes de R checar no tópico de R</p>
+<p>Para facilidadade de implementação, sugiro instalar os scripts desenvolvidos pelo grupo que podem ser encontrados em: <a class="reference external" href="https://github.com/rafaelsommer1/neuroimage">https://github.com/rafaelsommer1/neuroimage</a>. Para instalá-los basta:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git clone https://github.com/rafaelsommer1/neuroimage.git
+<span class="nb">cd</span> neuroimage
+sudo <span class="nb">echo</span> <span class="s2">&quot;export SCRIPTS_RCS=`pwd`&quot;</span> &gt;&gt; ~/.bashrc
+sudo <span class="nb">echo</span> <span class="s2">&quot;export PATH=</span><span class="nv">$PATH</span><span class="s2">:`pwd`/bin&quot;</span> &gt;&gt; ~/.bashrc
+</pre></div>
+</div>
+<p>Re-abra o terminal e teste:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>lesionMap
+&gt;&gt; Usage: lesionMap &lt;t1&gt; &lt;t2&gt; &lt;flair&gt;
+&gt;&gt; Call this script from the top of the files folder
+</pre></div>
+</div>
+<p>Se houver este resultado, os scripts estão instalados, em caso de erro entrar em contato com <a class="reference external" href="mailto:rafaelcasommer&#37;&#52;&#48;gmail&#46;com">rafaelcasommer<span>&#64;</span>gmail<span>&#46;</span>com</a></p>
 </div>
 <div class="section" id="dicom-para-nifti">
 <h2>DICOM para Nifti<a class="headerlink" href="#dicom-para-nifti" title="Permalink to this headline">¶</a></h2>
-<p>Texto aqui</p>
+<p>Arquivos adquiridos na ressonância ficam disponibilizados em formato DICOM o que pode ser bastante util para armazenamento de informações de identificação, metadados, etc… Porém não são simples de analisar e não compartilhaveis, visto que possuem informações sigilosas dos pacientes. Portanto, grande parte dos softwares de neuroimagem trabalham com imagens de formato Nifti.</p>
+<p>A documentação do formato pode ser encontrada em: <a class="reference external" href="https://nifti.nimh.nih.gov/">https://nifti.nimh.nih.gov/</a></p>
+<p>É importante então convertermos nossas imagens de dicom para nifti. Eu costumo utilizar o programa do mrtrix <strong>mrconvert</strong> para tal. Geralmente basta:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mrconvert dicom_folder file.nii.gz
+</pre></div>
 </div>
-<div class="section" id="extracao-de-tecido-cerebral">
-<h2>Extração de tecido cerebral<a class="headerlink" href="#extracao-de-tecido-cerebral" title="Permalink to this headline">¶</a></h2>
+<p>Sendo nifti_file o nome do arquivo desejado</p>
+<p>Após, costumo sempre orientar as imagens conforme o FSL, visto que a conversão muitas vezes pode levar a alterações de orientação. Basta:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>fslreorient2std file.nii.gz file.nii.gz
+</pre></div>
+</div>
+</div>
+<div class="section" id="processamento-de-imagens-anatomicas">
+<h2>Processamento de imagens anatômicas<a class="headerlink" href="#processamento-de-imagens-anatomicas" title="Permalink to this headline">¶</a></h2>
+<p>Este tópico se destina ao processamento de imagens anatomicas de pacientes com esclerose múltipla ou outras patologias desmielinizantes. Ao final do protocolo nosso objetivo é obter os seguintes dados:</p>
+<ul class="simple">
+<li>Mapa de lesões (probabilístico e binário)</li>
+<li>Mascaras de substância branca, substância cinzenta e LCR</li>
+<li>Volumetria normalizada de cérebro total, substância branca e substância cinzenta</li>
+<li>Volumetrias subcorticais normalizadas e absolutas</li>
+<li>Mapas corticais de volume, área e espessura com parcelações</li>
+</ul>
+<div class="section" id="mapa-de-lesao">
+<h3>Mapa de lesão<a class="headerlink" href="#mapa-de-lesao" title="Permalink to this headline">¶</a></h3>
+<p>Inicialmente, costumo utilizar um script em R que realiza os seguintes procedimentos:</p>
+<ol class="arabic simple">
+<li>Extração de calota craniana</li>
+<li>Normalização de sinal</li>
+<li>Cálculo de mapas lesionais</li>
+</ol>
+<p>Para chamar este script, necessitamos de pelo menos:</p>
+<ul class="simple">
+<li>Um T1 volumétrico</li>
+<li>Um Flair volumétrico</li>
+<li>Um T2</li>
+</ul>
+<p>De dentro de uma pasta com os arquivos basta chamar:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>lesionMap t1.nii.gz t2.nii.gz flair.nii.gz
+</pre></div>
+</div>
+<p>O processamento do script segue:</p>
+<img alt="_images/lesion_seg.png" src="_images/lesion_seg.png" />
+</div>
 </div>
 </div>
 
@@ -54,7 +119,7 @@
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-<h1 class="logo"><a href="index.html">Workflows</a></h1>
+<h1 class="logo"><a href="contents.html">Workflows</a></h1>
 
 
 
@@ -68,12 +133,15 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Neuroimagem</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#softwares">Softwares</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#dicom-para-nifti">DICOM para Nifti</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#extracao-de-tecido-cerebral">Extração de tecido cerebral</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#processamento-de-imagens-anatomicas">Processamento de imagens anatômicas</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#mapa-de-lesao">Mapa de lesão</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="emocemp.html">EMOCEMP Package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="emocemp.html">emocempr Package</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="r.html">Aspectos básicos de R</a></li>
@@ -82,22 +150,24 @@
 <div class="relations">
 <h3>Related Topics</h3>
 <ul>
-  <li><a href="index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="index.html" title="previous chapter">Neuroimmunology and Neuroinflammation Group</a></li>
-      <li>Next: <a href="emocemp.html" title="next chapter">EMOCEMP Package</a></li>
+  <li><a href="contents.html">Documentation overview</a><ul>
+      <li>Previous: <a href="contents.html" title="previous chapter">Neuroimmunology and Neuroinflammation Group</a></li>
+      <li>Next: <a href="emocemp.html" title="next chapter">emocempr Package</a></li>
   </ul></li>
 </ul>
 </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
+  <h3>Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="text" name="q" />
       <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script type="text/javascript">$('#searchbox').show(0);</script>
 
 
 
@@ -114,7 +184,7 @@
       &copy;2020, Rafael Canani Sommer.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.2.1</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |
